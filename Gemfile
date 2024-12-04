@@ -75,3 +75,6 @@ group :test do
   gem "selenium-webdriver"
 end
 gem "devise"
+gem 'httparty'
+gem 'rufus-scheduler'
+gem 'whenever', require: false
