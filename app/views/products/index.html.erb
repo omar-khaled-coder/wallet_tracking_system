@@ -4,6 +4,8 @@
     <li>
       <%= image_tag product.image, alt: product.name, width: 100 %>
       <%= product.name %> - $<%= product.price %>
+      <%= button_to "Buy", purchase_wallet_index_path(product_id: product.id), method: :post %>
+
     </li>
   <% end %>
 </ul>

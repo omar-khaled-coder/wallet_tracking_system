@@ -10,4 +10,18 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+
+  resources :wallet, only: [] do
+    member do
+      post :top_up
+    end
+  end
+
+  resources :wallet, only: [] do
+    post 'purchase', on: :collection
+  end
+
+  resources :products, only: [:index]
+  get 'user_profile/:id', to: 'pages#user_profile', as: 'user_profile'
+
 end
