@@ -1,0 +1,21 @@
+<h1><%= @user.full_name %>'s Profile</h1>
+<p>Email: <%= @user.email %></p>
+<p>Wallet Balance: $<%= @user.credit %></p>
+<h3>Top Up Wallet</h3>
+<%= form_with url: top_up_wallet_path(@user), method: :post, local: true do %>
+  <%= label_tag :amount, "Top-up Amount" %>
+  <%= number_field_tag :amount, nil, step: "0.01", min: 0 %>
+  <%= submit_tag "Top Up" %>
+<% end %>
+
+
+<h2>Transaction History</h2>
+<ul>
+  <% @transactions.each do |transaction| %>
+    <li>
+      <strong><%= transaction.transaction_type.capitalize %>:</strong>
+      $<%= transaction.amount %>
+      on <%= transaction.created_at.strftime("%B %d, %Y %I:%M %p") %>
+    </li>
+  <% end %>
+</ul>
