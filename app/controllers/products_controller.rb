@@ -1,4 +1,6 @@
 class ProductsController < ApplicationController
+  skip_before_action :authenticate_user!, only: :index
+
   def index
     # Clear existing products before inserting new data
     Product.delete_all  # Deletes all products in the database

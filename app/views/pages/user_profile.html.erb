@@ -1,21 +1,36 @@
-<h1><%= @user.full_name %>'s Profile</h1>
-<p>Email: <%= @user.email %></p>
-<p>Wallet Balance: $<%= @user.credit %></p>
-<h3>Top Up Wallet</h3>
-<%= form_with url: top_up_wallet_path(@user), method: :post, local: true do %>
-  <%= label_tag :amount, "Top-up Amount" %>
-  <%= number_field_tag :amount, nil, step: "0.01", min: 0 %>
-  <%= submit_tag "Top Up" %>
-<% end %>
+<div class="profile-container">
+  <div class="profile-header">
+    <h1><%= @user.full_name %>'s Profile</h1>
+    <p>Email: <%= @user.email %></p>
+    <p>Wallet Balance: <span class="balance">$<%= @user.credit %></span></p>
+    <%= link_to "Edit Profile", edit_user_registration_path, class: "edit-profile-button" %>
+  </div>
 
+  <div class="wallet-section">
+    <h3>Top Up Wallet</h3>
+    <%= form_with url: top_up_wallet_path(@user), method: :post, local: true, class: "top-up-form" do %>
+      <div class="form-group">
+        <%= label_tag :amount, "Top-up Amount", class: "form-label" %>
+        <%= number_field_tag :amount, nil, step: "0.01", min: 0, class: "form-input" %>
+      </div>
+      <%= submit_tag "Top Up", class: "btn btn-primary" %>
+    <% end %>
+  </div>
 
-<h2>Transaction History</h2>
-<ul>
-  <% @transactions.each do |transaction| %>
-    <li>
-      <strong><%= transaction.transaction_type.capitalize %>:</strong>
-      $<%= transaction.amount %>
-      on <%= transaction.created_at.strftime("%B %d, %Y %I:%M %p") %>
-    </li>
-  <% end %>
-</ul>
+  <div class="transactions-section">
+    <h2>Transaction History</h2>
+    <% if @transactions.any? %>
+      <ul class="transaction-list">
+        <% @transactions.each do |transaction| %>
+          <li>
+            <strong><%= transaction.transaction_type.capitalize %>:</strong>
+            $<%= transaction.amount %>
+            <span class="transaction-date">on <%= transaction.created_at.in_time_zone("Singapore").strftime("%B %d, %Y %I:%M %p") %></span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p>No transactions found.</p>
+    <% end %>
+  </div>
+</div>

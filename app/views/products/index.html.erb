@@ -1,11 +1,26 @@
-<h1>Products</h1>
-<ul>
-  <% @products.each do |product| %>
-    <li>
-      <%= image_tag product.image, alt: product.name, width: 100 %>
-      <%= product.name %> - $<%= product.price %>
-      <%= button_to "Buy", purchase_wallet_index_path(product_id: product.id), method: :post %>
+<div class="products-container">
+  <div class="header">
+    <h1>Products</h1>
+<% if user_signed_in? %>
+  <p>Your Wallet Balance: $<%= number_with_precision(current_user.credit, precision: 2) %></p>
+<% else %>
+  <p>Please sign in to view your wallet balance.</p>
+<% end %>
+  </div>
 
-    </li>
-  <% end %>
-</ul>
+  <div class="products-grid">
+    <% @products.each do |product| %>
+      <div class="product-card">
+        <%= image_tag product.image, alt: product.name, class: "product-image" %>
+        <div class="product-details">
+          <h3><%= product.name %></h3>
+          <p>Price: $<%= product.price %></p>
+<%= button_to "Buy", purchase_wallet_index_path(product_id: product.id),
+                method: :post,
+                class: "buy-button",
+                data: { confirm: "Are you sure you want to buy this product?", turbo_confirm: "Are you sure you want to buy this product?" } %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
